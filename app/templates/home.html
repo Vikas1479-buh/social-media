@@ -1,0 +1,346 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Showcase{% endblock %}
+
+{% block content %}
+<div class="container py-4" style="max-width: 1060px;">
+  <div class="row g-4 justify-content-center">
+    
+    <!-- Main Feed Column -->
+    <div class="col-12 col-lg-8">
+      
+      <!-- Stories Bar -->
+      <section class="mb-4 overflow-hidden position-relative rounded-4 bg-white border shadow-sm p-3 stories-container-box">
+        <div id="stories-bar" class="d-flex gap-3 overflow-x-auto pb-1 align-items-center" style="scrollbar-width: none; -ms-overflow-style: none;">
+          <!-- Skeleton stories -->
+          <div class="story-skeleton d-flex flex-column align-items-center gap-2 flex-shrink-0" style="width: 72px;">
+            <div class="placeholder-glow">
+              <div class="placeholder rounded-circle" style="width: 64px; height: 64px;"></div>
+            </div>
+            <div class="placeholder-glow w-100 text-center">
+              <div class="placeholder col-10 rounded" style="height: 10px;"></div>
+            </div>
+          </div>
+          <div class="story-skeleton d-flex flex-column align-items-center gap-2 flex-shrink-0" style="width: 72px;">
+            <div class="placeholder-glow">
+              <div class="placeholder rounded-circle" style="width: 64px; height: 64px;"></div>
+            </div>
+            <div class="placeholder-glow w-100 text-center">
+              <div class="placeholder col-10 rounded" style="height: 10px;"></div>
+            </div>
+          </div>
+          <div class="story-skeleton d-flex flex-column align-items-center gap-2 flex-shrink-0" style="width: 72px;">
+            <div class="placeholder-glow">
+              <div class="placeholder rounded-circle" style="width: 64px; height: 64px;"></div>
+            </div>
+            <div class="placeholder-glow w-100 text-center">
+              <div class="placeholder col-10 rounded" style="height: 10px;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Create Post Trigger Card -->
+      <div class="mb-4 d-none d-md-block">
+        <button class="btn w-100 text-start py-3 px-4 create-post-trigger-box d-flex align-items-center gap-3" data-bs-toggle="modal" data-bs-target="#createPostModal">
+          {% if current_user.profile_image %}
+            <img src="{{ url_for('static', filename=current_user.profile_image) }}" alt="You" width="40" height="40" class="rounded-circle shadow-sm" style="object-fit: cover;">
+          {% else %}
+            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center text-secondary shadow-sm" style="width: 40px; height: 40px;">
+              <i class="bi bi-person-fill fs-5"></i>
+            </div>
+          {% endif %}
+          <span class="text-muted fw-medium flex-grow-1" style="font-size: 0.95rem;">What's on your mind? Share a photo...</span>
+          <div class="rounded-circle p-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px; background: rgba(232, 114, 90, 0.1);">
+            <i class="bi bi-camera-fill fs-5" style="color: #E8725A;"></i>
+          </div>
+        </button>
+      </div>
+
+      <!-- Feed Container -->
+      <div id="feed-container" class="d-flex flex-column gap-4">
+        <!-- Skeleton Post Cards -->
+        <article class="card border-0 shadow-sm rounded-4 skeleton-post bg-white">
+          <div class="card-header bg-white border-0 d-flex align-items-center gap-3 p-3 rounded-top-4">
+            <div class="placeholder-glow">
+              <div class="placeholder rounded-circle" style="width: 40px; height: 40px;"></div>
+            </div>
+            <div class="placeholder-glow w-50">
+              <div class="placeholder col-8 rounded mb-1"></div>
+              <div class="placeholder col-4 rounded" style="font-size: 0.8em;"></div>
+            </div>
+          </div>
+          <div class="placeholder-glow bg-light">
+            <div class="placeholder w-100" style="height: 350px;"></div>
+          </div>
+          <div class="card-body p-3">
+            <div class="placeholder-glow mb-2">
+              <div class="placeholder col-3 rounded"></div>
+            </div>
+            <div class="placeholder-glow">
+              <div class="placeholder col-10 rounded mb-2"></div>
+              <div class="placeholder col-6 rounded"></div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- End of feed message (hidden initially) -->
+      <div id="feed-end" class="text-center py-5 d-none">
+        <div class="d-inline-flex p-3 rounded-circle bg-light mb-3">
+          <i class="bi bi-check2-circle fs-2" style="color: #E8725A;"></i>
+        </div>
+        <h6 class="fw-bold text-dark mb-1">You're all caught up!</h6>
+        <p class="text-muted small mb-0">Follow more creators or share your own moments</p>
+      </div>
+    </div>
+
+    <!-- Right Sidebar (Desktop only) -->
+    <div class="d-none d-lg-block col-lg-4">
+      <aside class="sticky-top d-flex flex-column gap-3" style="top: 86px; z-index: 10;">
+        
+        <!-- User Snapshot Card -->
+        <div class="sidebar-widget">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <a href="{{ url_for('profile.view_profile', username=current_user.username) }}" class="d-flex align-items-center gap-3 text-decoration-none">
+              {% if current_user.profile_image %}
+                <img src="{{ url_for('static', filename=current_user.profile_image) }}" alt="You" width="50" height="50" class="rounded-circle shadow-sm sidebar-user-avatar-glow" style="object-fit: cover;">
+              {% else %}
+                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center text-secondary shadow-sm" style="width: 50px; height: 50px;">
+                  <i class="bi bi-person-fill fs-3"></i>
+                </div>
+              {% endif %}
+              <div>
+                <div class="fw-bold text-dark d-flex align-items-center gap-1">
+                  {{ current_user.username }}
+                  <span class="online-pulse-dot ms-1" title="Active now"></span>
+                </div>
+                <div class="text-muted small">@{{ current_user.username }}</div>
+              </div>
+            </a>
+            <a href="{{ url_for('profile.view_profile', username=current_user.username) }}" class="btn btn-sm btn-light border-0 rounded-pill px-3 py-1 fw-semibold small text-primary" style="background: rgba(232, 114, 90, 0.08);">
+              View
+            </a>
+          </div>
+
+          <div class="d-grid gap-2 pt-2 border-top border-light">
+            <button class="btn btn-primary-glow btn-sm rounded-pill fw-semibold py-2 text-white d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#createPostModal">
+              <i class="bi bi-plus-circle-fill"></i> Create New Post
+            </button>
+            <button class="btn btn-light btn-sm rounded-pill fw-semibold py-2 text-dark border-0 d-flex align-items-center justify-content-center gap-2" id="sidebar-add-story-btn">
+              <i class="bi bi-camera-fill" style="color: #E8725A;"></i> Add Story
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Discover Card -->
+        <div class="sidebar-widget">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="fw-bold text-dark small text-uppercase" style="letter-spacing: 0.05em;"><i class="bi bi-compass-fill me-1 text-primary"></i> Explore Highlights</span>
+            <a href="{{ url_for('explore.explore') }}" class="text-decoration-none small text-muted">See All</a>
+          </div>
+          <p class="text-muted small mb-3">Discover creative images, trending tags, and new creators across the Showcase community.</p>
+          <a href="{{ url_for('explore.explore') }}" class="btn btn-light w-100 rounded-pill btn-sm fw-medium text-dark border-0 py-2">
+            <i class="bi bi-stars me-1 text-warning"></i> Browse Trending Feed
+          </a>
+        </div>
+
+        <!-- Footer / Credits -->
+        <div class="px-3 text-muted" style="font-size: 0.75rem; line-height: 1.6;">
+          <div class="d-flex flex-wrap gap-2 mb-2 text-muted">
+            <span>About</span> • <span>Community</span> • <span>Privacy</span> • <span>Terms</span>
+          </div>
+          <div>© 2026 Showcase • Pure Image Community</div>
+        </div>
+
+      </aside>
+    </div>
+
+  </div>
+</div>
+
+<!-- Create Post Modal -->
+<div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header border-bottom-0 pb-0">
+        <h5 class="modal-title fw-bold text-dark" id="createPostModalLabel">Create Post</h5>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Upload options (shown first) -->
+        <div id="post-upload-options">
+          <div class="d-flex flex-column gap-3 py-3">
+            <button type="button" class="btn btn-light rounded-3 p-3 d-flex align-items-center gap-3 border-0" id="post-gallery-btn">
+              <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background-color: #FFF0ED;">
+                <i class="bi bi-image fs-4" style="color: #E8725A;"></i>
+              </div>
+              <div class="text-start">
+                <div class="fw-medium text-dark">Choose from Gallery</div>
+                <div class="small text-muted">Select a photo from your device</div>
+              </div>
+            </button>
+            <button type="button" class="btn btn-light rounded-3 p-3 d-flex align-items-center gap-3 border-0" id="post-camera-btn">
+              <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background-color: #FFF0ED;">
+                <i class="bi bi-camera fs-4" style="color: #E8725A;"></i>
+              </div>
+              <div class="text-start">
+                <div class="fw-medium text-dark">Take Photo</div>
+                <div class="small text-muted">Use your camera to capture a moment</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Preview & caption (shown after image selected) -->
+        <div id="post-preview-section" class="d-none">
+          <div class="position-relative rounded-4 overflow-hidden bg-light border mb-3">
+            <img src="" id="post-image-preview" class="img-fluid w-100" alt="Preview" style="max-height: 400px; object-fit: cover;">
+            <button type="button" class="btn btn-dark btn-sm position-absolute top-0 end-0 m-2 rounded-circle shadow" id="post-remove-image" aria-label="Remove image" style="width: 32px; height: 32px;">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+          <textarea class="form-control border-0 bg-light rounded-3 p-3 mb-3" id="post-caption" rows="3" placeholder="Write a caption..." maxlength="2000"></textarea>
+          <div class="d-grid">
+            <button type="button" class="btn rounded-pill fw-medium py-3 text-white" style="background-color: #E8725A; border-color: #E8725A;" id="post-publish-btn">
+              <span class="publish-text">Publish Post</span>
+              <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Story Modal -->
+<div class="modal fade" id="createStoryModal" tabindex="-1" aria-labelledby="createStoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header border-bottom-0 pb-0">
+        <h5 class="modal-title fw-bold text-dark" id="createStoryModalLabel">Create Story</h5>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Upload options -->
+        <div id="story-upload-options">
+          <div class="d-flex flex-column gap-3 py-3">
+            <button type="button" class="btn btn-light rounded-3 p-3 d-flex align-items-center gap-3 border-0" id="story-gallery-btn">
+              <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background-color: #FFF0ED;">
+                <i class="bi bi-image fs-4" style="color: #E8725A;"></i>
+              </div>
+              <div class="text-start">
+                <div class="fw-medium text-dark">Choose from Gallery</div>
+                <div class="small text-muted">Select a photo for your story</div>
+              </div>
+            </button>
+            <button type="button" class="btn btn-light rounded-3 p-3 d-flex align-items-center gap-3 border-0" id="story-camera-btn">
+              <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background-color: #FFF0ED;">
+                <i class="bi bi-camera fs-4" style="color: #E8725A;"></i>
+              </div>
+              <div class="text-start">
+                <div class="fw-medium text-dark">Take Photo</div>
+                <div class="small text-muted">Capture a moment for your story</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Story preview -->
+        <div id="story-preview-section" class="d-none">
+          <div class="position-relative rounded-4 overflow-hidden bg-light border mb-3">
+            <img src="" id="story-image-preview" class="img-fluid w-100" alt="Story preview" style="max-height: 500px; object-fit: cover;">
+            <button type="button" class="btn btn-dark btn-sm position-absolute top-0 end-0 m-2 rounded-circle shadow" id="story-remove-image" aria-label="Remove" style="width: 32px; height: 32px;">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+          <div class="d-grid">
+            <button type="button" class="btn rounded-pill fw-medium py-3 text-white" style="background-color: #E8725A; border-color: #E8725A;" id="story-publish-btn">
+              <span class="publish-text">Add to Story</span>
+              <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden file inputs -->
+<input type="file" id="post-file-input" class="d-none" accept="image/jpeg,image/png,image/webp">
+<input type="file" id="story-file-input" class="d-none" accept="image/jpeg,image/png,image/webp">
+
+<!-- Story Viewer Overlay -->
+<div id="story-viewer" class="position-fixed top-0 start-0 w-100 h-100 d-none" style="z-index: 9999; background: rgba(0,0,0,0.95);">
+  <div class="d-flex flex-column h-100 align-items-center justify-content-center position-relative">
+    <!-- Progress bar -->
+    <div class="position-absolute top-0 start-0 w-100 p-2 d-flex gap-1" id="story-progress-bar"></div>
+    <!-- Header -->
+    <div class="position-absolute top-0 start-0 w-100 d-flex align-items-center justify-content-between p-3 pt-4" style="z-index: 10;">
+      <div class="d-flex align-items-center gap-2">
+        <img src="" id="story-viewer-avatar" class="rounded-circle" width="32" height="32" style="object-fit: cover;" alt="">
+        <span class="text-white fw-medium" id="story-viewer-username"></span>
+        <span class="text-white-50 small" id="story-viewer-time"></span>
+      </div>
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-link text-white-50 fs-5 text-decoration-none p-1 d-none" id="story-viewer-delete" title="Delete this story" aria-label="Delete story" style="transition: color 0.2s;">
+          <i class="bi bi-trash3"></i>
+        </button>
+        <button class="btn btn-link text-white fs-4 text-decoration-none p-0" id="story-viewer-close" aria-label="Close story">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+    <!-- Image -->
+    <img src="" id="story-viewer-image" class="img-fluid" style="max-height: 80vh; max-width: 100%; object-fit: contain;" alt="Story">
+    <!-- Navigation -->
+    <div class="position-absolute top-50 start-0 w-100 d-flex justify-content-between px-2 translate-middle-y">
+      <button class="btn btn-link text-white fs-3 p-2" id="story-prev" aria-label="Previous"><i class="bi bi-chevron-left"></i></button>
+      <button class="btn btn-link text-white fs-3 p-2" id="story-next" aria-label="Next"><i class="bi bi-chevron-right"></i></button>
+    </div>
+
+    <!-- Bottom Controls -->
+    <div class="position-absolute bottom-0 start-0 w-100 p-3 d-flex align-items-center justify-content-between" style="z-index: 12;" id="story-viewer-bottom">
+      <!-- Owner Views Pill -->
+      <button id="story-viewer-seen-btn" class="btn btn-dark bg-opacity-75 rounded-pill px-3 py-2 text-white border-0 d-none align-items-center gap-2 shadow-sm" style="backdrop-filter: blur(12px); font-size: 0.85rem;">
+        <i class="bi bi-eye-fill" style="color: #E8725A;"></i>
+        <span id="story-viewer-seen-count" class="fw-semibold">0 views</span>
+        <i class="bi bi-chevron-up ms-1 small text-white-50"></i>
+      </button>
+
+      <!-- Viewer Reactions Bar (Right Side) -->
+      <div id="story-viewer-reactions" class="d-none align-items-center gap-1 p-1 px-2 rounded-pill ms-auto shadow-sm" style="background: rgba(255,255,255,0.18); backdrop-filter: blur(12px);">
+        <button class="btn btn-link text-decoration-none p-1 fs-5 story-react-emoji" data-emoji="❤️" title="Love">❤️</button>
+        <button class="btn btn-link text-decoration-none p-1 fs-5 story-react-emoji" data-emoji="🔥" title="Fire">🔥</button>
+        <button class="btn btn-link text-decoration-none p-1 fs-5 story-react-emoji" data-emoji="😂" title="Laugh">😂</button>
+        <button class="btn btn-link text-decoration-none p-1 fs-5 story-react-emoji" data-emoji="👏" title="Clap">👏</button>
+        <button class="btn btn-link text-decoration-none p-1 fs-5 story-react-emoji" data-emoji="😍" title="Heart eyes">😍</button>
+        <button class="btn btn-link text-decoration-none p-1 fs-5 story-react-emoji" data-emoji="😮" title="Wow">😮</button>
+      </div>
+    </div>
+
+    <!-- Story Viewers Drawer (for Owner) -->
+    <div id="story-viewers-drawer" class="position-absolute bottom-0 start-50 translate-middle-x w-100 d-none" style="max-width: 500px; max-height: 65vh; z-index: 20; background: rgba(24, 24, 27, 0.95); backdrop-filter: blur(20px); border-radius: 24px 24px 0 0; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 -10px 40px rgba(0,0,0,0.5);">
+      <div class="p-3 border-bottom border-secondary border-opacity-25 d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-eye-fill" style="color: #E8725A;"></i>
+          <span class="text-white fw-bold fs-6" id="story-viewers-drawer-title">Story Views (0)</span>
+        </div>
+        <button class="btn btn-link text-white-50 p-0 text-decoration-none" id="story-viewers-drawer-close" aria-label="Close viewers">
+          <i class="bi bi-x-lg fs-5"></i>
+        </button>
+      </div>
+      <div id="story-viewers-list" class="p-3 overflow-y-auto" style="max-height: 48vh;">
+        <!-- Viewer items dynamically inserted -->
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/camera.js') }}"></script>
+<script src="{{ url_for('static', filename='js/image-upload.js') }}"></script>
+<script src="{{ url_for('static', filename='js/feed.js') }}"></script>
+<script src="{{ url_for('static', filename='js/stories.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ profile_user.username }} - Showcase{% endblock %}
+
+{% block content %}
+<div class="container py-4" style="max-width: 960px;">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      
+      <!-- Profile Hero Card -->
+      <header class="profile-hero-card mb-5">
+        <!-- Sunset Gradient Cover Banner -->
+        <div class="profile-cover-banner"></div>
+        
+        <div class="p-4 p-md-5 pt-0">
+          <div class="d-flex flex-column flex-md-row align-items-center align-items-md-end justify-content-between gap-3 mb-4">
+            
+            <!-- Avatar & Main Identifiers -->
+            <div class="d-flex flex-column flex-md-row align-items-center align-items-md-end gap-4 text-center text-md-start">
+              <div class="profile-avatar-container flex-shrink-0">
+                {% if profile_user.profile_image %}
+                  <img src="{{ url_for('static', filename=profile_user.profile_image) }}" alt="{{ profile_user.username }}" class="rounded-circle profile-avatar-glow" style="width: 136px; height: 136px; object-fit: cover;">
+                {% else %}
+                  <div class="rounded-circle bg-light d-flex align-items-center justify-content-center text-secondary profile-avatar-glow" style="width: 136px; height: 136px;">
+                    <i class="bi bi-person-fill" style="font-size: 4.5rem;"></i>
+                  </div>
+                {% endif %}
+              </div>
+              
+              <div class="mb-2">
+                <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2 mb-1">
+                  <h1 class="h3 fw-bold mb-0 text-dark">{{ profile_user.username }}</h1>
+                  {% if profile_user.is_online %}
+                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1 small fw-normal d-inline-flex align-items-center gap-1">
+                      <span class="online-pulse-dot"></span> online
+                    </span>
+                  {% endif %}
+                </div>
+                <div class="text-muted small fw-medium">@{{ profile_user.username }}</div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+              {% if current_user.id == profile_user.id %}
+                <button class="btn btn-light border shadow-sm btn-sm rounded-pill px-3 py-2 fw-semibold d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                  <i class="bi bi-pencil-square" style="color: #E8725A;"></i> Edit Profile
+                </button>
+                <button class="btn btn-light border shadow-sm btn-sm rounded-pill px-3 py-2 fw-semibold text-muted d-flex align-items-center gap-1" id="share-profile-btn" title="Copy profile link">
+                  <i class="bi bi-share"></i> Share
+                </button>
+              {% else %}
+                <div id="profile-connection-btn" data-target-user-id="{{ profile_user.id }}" data-connection-status="{{ connection_status or 'none' }}" data-connection-id="{{ connection_id or '' }}">
+                  {% if connection_status == 'connected' %}
+                    <button class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold btn-disconnect d-flex align-items-center gap-2" onclick="handleProfileDisconnect({{ profile_user.id }})">
+                      <i class="bi bi-check-circle-fill text-success"></i> Connected
+                    </button>
+                  {% elif connection_status == 'request_sent' %}
+                    <button class="btn btn-light rounded-pill px-4 py-2 fw-semibold text-muted d-flex align-items-center gap-2" disabled>
+                      <i class="bi bi-hourglass-split"></i> Request Sent
+                    </button>
+                  {% elif connection_status == 'request_received' %}
+                    <div class="d-flex gap-2">
+                      <button class="btn btn-primary-glow rounded-pill px-4 py-2 fw-semibold text-white d-flex align-items-center gap-1" onclick="handleProfileAccept({{ connection_id }})">
+                        <i class="bi bi-person-check-fill"></i> Accept
+                      </button>
+                      <button class="btn btn-outline-secondary rounded-pill px-3 py-2 fw-semibold" onclick="handleProfileReject({{ connection_id }})">
+                        Decline
+                      </button>
+                    </div>
+                  {% else %}
+                    <button class="btn btn-primary-glow rounded-pill px-4 py-2 fw-semibold text-white d-flex align-items-center gap-2" onclick="handleProfileConnect({{ profile_user.id }})">
+                      <i class="bi bi-person-plus-fill"></i> Connect
+                    </button>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+
+          </div>
+
+          <!-- Stats Counters -->
+          <div class="d-flex justify-content-center justify-content-md-start gap-3 mb-4 flex-wrap">
+            <div class="profile-stat-box d-flex align-items-center gap-2">
+              <i class="bi bi-images fs-5" style="color: #E8725A;"></i>
+              <div>
+                <span class="fw-bold fs-6 text-dark" id="profile-post-count">{{ post_count }}</span>
+                <span class="text-muted small ms-1">Posts</span>
+              </div>
+            </div>
+            <div class="profile-stat-box d-flex align-items-center gap-2">
+              <i class="bi bi-people-fill fs-5" style="color: #4CAF82;"></i>
+              <div>
+                <span class="fw-bold fs-6 text-dark" id="profile-connection-count">{{ connection_count }}</span>
+                <span class="text-muted small ms-1">Connections</span>
+              </div>
+            </div>
+            <div class="profile-stat-box d-flex align-items-center gap-2">
+              <i class="bi bi-stars fs-5 text-warning"></i>
+              <div>
+                <span class="fw-semibold small text-dark">Creator</span>
+                <span class="text-muted small ms-1">Showcase</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bio -->
+          {% if profile_user.bio %}
+          <div class="p-3 rounded-4 bg-light bg-opacity-75 border-0 mt-3" style="max-width: 600px;">
+            <p class="mb-0 text-dark small" style="line-height: 1.6;">{{ profile_user.bio }}</p>
+          </div>
+          {% endif %}
+
+        </div>
+      </header>
+
+      <!-- Posts Section -->
+      <section>
+        <!-- Modern Section Tab -->
+        <div class="d-flex align-items-center justify-content-center gap-4 mb-4 border-bottom border-light">
+          <button class="profile-tab-btn active d-flex align-items-center gap-2">
+            <i class="bi bi-grid-3x3-gap-fill fs-5" style="color: #E8725A;"></i>
+            <span>POSTS</span>
+          </button>
+        </div>
+
+        <div id="profile-posts-grid" class="row g-3" data-user-id="{{ profile_user.id }}">
+          <!-- Skeleton placeholders -->
+          <div class="col-4 skeleton-profile-post">
+            <div class="placeholder-glow"><div class="placeholder w-100 rounded-4" style="aspect-ratio: 1/1;"></div></div>
+          </div>
+          <div class="col-4 skeleton-profile-post">
+            <div class="placeholder-glow"><div class="placeholder w-100 rounded-4" style="aspect-ratio: 1/1;"></div></div>
+          </div>
+          <div class="col-4 skeleton-profile-post">
+            <div class="placeholder-glow"><div class="placeholder w-100 rounded-4" style="aspect-ratio: 1/1;"></div></div>
+          </div>
+        </div>
+
+        <!-- Empty state -->
+        <div id="profile-empty" class="text-center py-5 d-none">
+          <div class="d-inline-flex p-4 rounded-circle bg-light mb-3 shadow-sm">
+            <i class="bi bi-camera fs-1" style="color: #E8725A;"></i>
+          </div>
+          <h5 class="fw-bold text-dark mb-1">No posts shared yet</h5>
+          <p class="text-muted small mb-3">When {{ profile_user.username }} shares photos, they will appear here.</p>
+          {% if current_user.id == profile_user.id %}
+            <button class="btn btn-primary-glow text-white rounded-pill px-4 py-2 fw-semibold" data-bs-toggle="modal" data-bs-target="#createPostModal">
+              <i class="bi bi-plus-lg me-1"></i> Share Your First Post
+            </button>
+          {% endif %}
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+{% if current_user.id == profile_user.id %}
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title fw-bold text-dark" id="editProfileModalLabel">Edit Profile</h5>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form id="edit-profile-form">
+          <div class="d-flex flex-column align-items-center mb-4">
+            <div class="position-relative mb-3">
+              {% if profile_user.profile_image %}
+                <img src="{{ url_for('static', filename=profile_user.profile_image) }}" id="edit-avatar-preview" class="rounded-circle shadow-sm" style="width: 120px; height: 120px; object-fit: cover;" alt="Profile">
+              {% else %}
+                <div id="edit-avatar-placeholder" class="rounded-circle bg-light d-flex align-items-center justify-content-center text-secondary shadow-sm" style="width: 120px; height: 120px;">
+                  <i class="bi bi-person-fill" style="font-size: 4rem;"></i>
+                </div>
+                <img src="" id="edit-avatar-preview" class="rounded-circle shadow-sm d-none" style="width: 120px; height: 120px; object-fit: cover;" alt="Profile">
+              {% endif %}
+              <label for="edit-avatar-input" class="position-absolute bottom-0 end-0 btn rounded-circle p-2 shadow text-white" style="background-color: #E8725A; border-color: #E8725A; cursor: pointer; width: 36px; height: 36px;" aria-label="Change photo">
+                <i class="bi bi-camera"></i>
+              </label>
+              <input type="file" id="edit-avatar-input" class="d-none" accept="image/jpeg,image/png,image/webp">
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label for="edit-bio" class="form-label fw-medium text-dark">Bio</label>
+            <textarea class="form-control bg-light border-0 rounded-3 p-3" id="edit-bio" rows="3" maxlength="500" placeholder="Tell us about yourself">{{ profile_user.bio or '' }}</textarea>
+            <div class="form-text text-end mt-1"><span id="bio-char-count">{{ (profile_user.bio or '')|length }}</span>/500</div>
+          </div>
+          
+          <div class="d-grid">
+            <button type="submit" class="btn rounded-pill fw-medium py-3 text-white" id="save-profile-btn" style="background-color: #E8725A; border-color: #E8725A;">
+              <span class="save-text">Save Changes</span>
+              <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}

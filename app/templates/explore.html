@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Explore - Showcase{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="row mb-5">
+    <div class="col-12 col-md-8 mx-auto text-center">
+      <h1 class="fw-bold mb-2 text-dark">Explore</h1>
+      <p class="text-muted mb-4">Discover people on Showcase</p>
+      
+      <div class="position-relative mx-auto shadow-sm rounded-pill mb-3" style="max-width: 500px;">
+        <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-4 text-muted"></i>
+        <input type="search" id="explore-search" class="form-control form-control-lg rounded-pill ps-5 pe-5 py-3 bg-white border-0 shadow-none" placeholder="Search creators by username..." autocomplete="off">
+        <button type="button" id="explore-search-clear" class="btn btn-link text-muted position-absolute top-50 end-0 translate-middle-y me-3 p-1 d-none text-decoration-none" aria-label="Clear search">
+          <i class="bi bi-x-circle-fill"></i>
+        </button>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="d-flex justify-content-center gap-2 flex-wrap" id="explore-filter-tabs">
+        <button type="button" class="btn btn-sm rounded-pill px-3 py-1 fw-semibold explore-filter-btn active" data-filter="all">All</button>
+        <button type="button" class="btn btn-sm rounded-pill px-3 py-1 fw-semibold explore-filter-btn" data-filter="online">
+          <span class="online-pulse-dot me-1"></span> Online Now
+        </button>
+        <button type="button" class="btn btn-sm rounded-pill px-3 py-1 fw-semibold explore-filter-btn" data-filter="connected">Connected</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="explore-grid" class="explore-grid row g-4 justify-content-center">
+    <!-- Skeletons -->
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+      <div class="card border-0 shadow-sm rounded-4 h-100 text-center p-3 bg-white">
+        <div class="placeholder-glow d-flex justify-content-center mb-3 mt-2">
+          <div class="placeholder rounded-circle" style="width: 80px; height: 80px;"></div>
+        </div>
+        <div class="placeholder-glow">
+          <div class="placeholder col-8 rounded mb-2"></div>
+          <div class="placeholder col-10 rounded mb-3" style="font-size: 0.8em;"></div>
+        </div>
+        <div class="placeholder-glow mt-auto">
+          <div class="placeholder col-12 rounded-pill py-2"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+      <div class="card border-0 shadow-sm rounded-4 h-100 text-center p-3 bg-white">
+        <div class="placeholder-glow d-flex justify-content-center mb-3 mt-2">
+          <div class="placeholder rounded-circle" style="width: 80px; height: 80px;"></div>
+        </div>
+        <div class="placeholder-glow">
+          <div class="placeholder col-8 rounded mb-2"></div>
+          <div class="placeholder col-10 rounded mb-3" style="font-size: 0.8em;"></div>
+        </div>
+        <div class="placeholder-glow mt-auto">
+          <div class="placeholder col-12 rounded-pill py-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="explore-empty" class="text-center py-5 d-none mt-4">
+    <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+      <i class="bi bi-search fs-2 text-muted"></i>
+    </div>
+    <h3 class="h5 fw-bold text-dark">No users found</h3>
+    <p class="text-muted">Try adjusting your search terms</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/explore.js') }}"></script>
+{% endblock %}

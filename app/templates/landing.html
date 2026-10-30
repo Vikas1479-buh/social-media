@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Showcase — Connect. Share. Discover.{% endblock %}
+
+{% block content %}
+<div class="position-relative overflow-hidden min-vh-100 d-flex flex-column justify-content-between" style="background: radial-gradient(circle at 50% 20%, rgba(232, 114, 90, 0.08) 0%, rgba(250, 250, 248, 1) 70%);">
+
+  <!-- Ambient background glow circles -->
+  <div class="position-absolute top-0 start-50 translate-middle rounded-circle" style="width: 600px; height: 600px; background: radial-gradient(circle, rgba(232, 114, 90, 0.12) 0%, transparent 70%); pointer-events: none; filter: blur(50px);"></div>
+  <div class="position-absolute bottom-0 end-0 rounded-circle" style="width: 500px; height: 500px; background: radial-gradient(circle, rgba(245, 166, 35, 0.08) 0%, transparent 70%); pointer-events: none; filter: blur(60px);"></div>
+
+  <!-- Landing Header -->
+  <header class="container py-4 d-flex justify-content-between align-items-center" style="max-width: 1080px; z-index: 10;">
+    <a href="{{ url_for('auth.landing') }}" class="d-flex align-items-center gap-2 text-decoration-none">
+      <div class="brand-icon-badge">
+        <i class="bi bi-camera-fill"></i>
+      </div>
+      <span class="brand-gradient fs-3 fw-bold">Showcase</span>
+    </a>
+    <div class="d-flex align-items-center gap-2">
+      <a href="{{ url_for('auth.login') }}" class="btn btn-link text-decoration-none text-dark fw-semibold px-3 py-2">Log In</a>
+      <a href="{{ url_for('auth.register') }}" class="btn btn-primary-glow rounded-pill px-4 py-2 fw-semibold">Sign Up</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="container my-auto py-5" style="max-width: 1080px; z-index: 10;">
+    <div class="row align-items-center gy-5">
+      
+      <!-- Left Content -->
+      <div class="col-12 col-lg-6 text-center text-lg-start">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3" style="background: rgba(232, 114, 90, 0.1); color: #E8725A; font-size: 0.85rem; font-weight: 600;">
+          <i class="bi bi-stars"></i> Curated Image-First Social Platform
+        </div>
+        <h1 class="display-3 fw-bold text-dark lh-sm mb-3">
+          Capture moments.<br>
+          <span class="brand-gradient">Share pure beauty.</span>
+        </h1>
+        <p class="lead text-secondary mb-4 fs-5" style="max-width: 480px; margin-left: auto; margin-right: auto; margin-left: lg-0;">
+          Showcase is the modern photo-focused space designed for real humans, authentic stories, and clutter-free inspiration.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3 mb-5">
+          <a href="{{ url_for('auth.register') }}" class="btn btn-primary-glow btn-lg rounded-pill px-5 py-3 fw-semibold fs-6">
+            Get Started Free <i class="bi bi-arrow-right ms-2"></i>
+          </a>
+          <a href="{{ url_for('auth.login') }}" class="btn btn-outline-showcase btn-lg rounded-pill px-4 py-3 fw-semibold fs-6">
+            Log In to Account
+          </a>
+        </div>
+
+        <!-- Value Badges -->
+        <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-4 text-muted small">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-check-circle-fill text-success"></i> 100% Image-Focused
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-check-circle-fill text-success"></i> 24h Ephemeral Stories
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-check-circle-fill text-success"></i> Meaningful Connections
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Visual Preview Mockup -->
+      <div class="col-12 col-lg-6 d-flex justify-content-center">
+        <div class="position-relative" style="width: 100%; max-width: 420px; height: 480px;">
+          
+          <!-- Card 1 (Back left tilt) -->
+          <div class="card border-0 rounded-4 shadow-lg p-2 position-absolute" style="width: 270px; top: 20px; left: 10px; transform: rotate(-6deg); z-index: 1; background: #FFF;">
+            <div class="rounded-3 overflow-hidden position-relative mb-2" style="height: 240px; background: #EEE;">
+              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80" alt="Ocean preview" class="w-100 h-100" style="object-fit: cover;">
+              <span class="position-absolute bottom-0 start-0 m-2 badge bg-dark bg-opacity-75 rounded-pill px-2 py-1"><i class="bi bi-heart-fill text-danger me-1"></i> 2.4k</span>
+            </div>
+            <div class="d-flex align-items-center gap-2 px-1">
+              <div class="rounded-circle bg-light" style="width: 26px; height: 26px; overflow: hidden;">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Avatar" class="w-100 h-100" style="object-fit: cover;">
+              </div>
+              <span class="fw-semibold text-dark small">@elena_visuals</span>
+            </div>
+          </div>
+
+          <!-- Card 2 (Front right tilt) -->
+          <div class="card border-0 rounded-4 shadow-lg p-2 position-absolute" style="width: 280px; bottom: 20px; right: 10px; transform: rotate(4deg); z-index: 2; background: #FFF;">
+            <div class="rounded-3 overflow-hidden position-relative mb-2" style="height: 260px; background: #EEE;">
+              <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="Moments preview" class="w-100 h-100" style="object-fit: cover;">
+              <span class="position-absolute bottom-0 start-0 m-2 badge bg-dark bg-opacity-75 rounded-pill px-2 py-1"><i class="bi bi-heart-fill text-danger me-1"></i> 1.8k</span>
+            </div>
+            <div class="d-flex align-items-center justify-content-between px-1">
+              <div class="d-flex align-items-center gap-2">
+                <div class="rounded-circle bg-light" style="width: 26px; height: 26px; overflow: hidden;">
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="Avatar" class="w-100 h-100" style="object-fit: cover;">
+                </div>
+                <span class="fw-semibold text-dark small">@marcus.lens</span>
+              </div>
+              <span class="badge rounded-pill text-white" style="background-color: #E8725A; font-size: 0.65rem;">Trending</span>
+            </div>
+          </div>
+
+          <!-- Floating Badge -->
+          <div class="card border-0 rounded-pill shadow-lg py-2 px-3 position-absolute d-flex flex-row align-items-center gap-2" style="top: 220px; left: 35%; transform: translate(-50%, -50%); z-index: 3; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);">
+            <div class="rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 32px; height: 32px; background: #4CAF82;">
+              <i class="bi bi-person-check-fill"></i>
+            </div>
+            <div class="pe-2">
+              <div class="fw-bold text-dark" style="font-size: 0.8rem;">Connected!</div>
+              <div class="text-muted" style="font-size: 0.7rem;">New post shared</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Landing Footer -->
+  <footer class="container py-4 text-center text-muted small" style="max-width: 1080px; z-index: 10;">
+    <p class="mb-0">&copy; 2026 Showcase Platform. Crafted for visual expression.</p>
+  </footer>
+
+</div>
+{% endblock %}
